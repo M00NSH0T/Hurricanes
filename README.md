@@ -5,9 +5,10 @@ Far too many tutorials on using Machine Learning out there make it seem like you
 
 So that's what this series is all about... applying the engineering design process to solve big problems with the coolest new tools. And we're starting off with hurricanes. If you're interested in getting your hands dirty with me as we apply this process to the problem of forecasting hurricanes using machine learning, strap in and subscribe. 
 
-Just a couple notes up front: 
+Just a few notes up front: 
 1. Instead of acting like a standard repository with the latest version being reflected by what you see here, I'm going to keep the code I use from each episode in its associated folder. So, "Episode_5" may have a newer version of the same file contained in "Episode_4" but that's just so you can follow along with the series. I'll include a readme in each episode folder to help aid you in using each file, but for the best experience, you should watch the associated episode.
 1. Also, the datasets I use here are massive, and so I will not be posting any of that here. If you want to follow along, you'll have to download it yourself using the ftp sites and Python scripts I've written. Just a heads up though, I've basically filled up an entire 4TB hard drive, and I've only scratched the surface of the European data.
+1. I will be using Python with Keras/Tensorflow. I'm not going to be teaching Python at all, and I'm not going to be focusing too much on how many of these algorithms work. There are a number of awesome free courses out there that you can take to teach you all that. I'd recommend Andrew Ng's Machine Learning Course on Coursera and David Silver's course on YouTube as a starting point. Instead, we're going to focus on the stuff that isn't really covered in any of the other courses I've seen out there. Namely, setting up the problem, working with real-world data, and training with utterly massive datasets.
 
 If you're still onboard, you'll need a few things.
 
