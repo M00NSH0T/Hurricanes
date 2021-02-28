@@ -48,11 +48,20 @@ def get_s3_keys(bucket, s3_client, prefix=''):
 def gen_image(m,year=2017, day_of_year=60, hour=0, band=12, margin=10, center_lat=45, center_lon=-70, SID='', my_dpi=200,
                save_img=True, show_lines=True):
     gc.collect()
-    keys = get_s3_keys(bucket_name,
+    try:
+        keys = get_s3_keys(bucket_name,
                        s3_client,
-                       prefix=f'{product_name}/{year}/{day_of_year:03.0f}/{hour:02.0f}/OR_{product_name}-M3C{band:02.0f}'
-                       )
-    key = next(keys)  # just get first key, for first image after the hour.
+                       prefix = f'{product_name}/{year}/{day_of_year:03.0f}/{hour:02.0f}/OR_{product_name}-M3C{band:02.0f}'
+                      )
+        all_keys= [key for key in keys]
+        key = all_keys[0]
+    except:
+        keys = get_s3_keys(bucket_name,
+                       s3_client,
+                       prefix = f'{product_name}/{year}/{day_of_year:03.0f}/{hour:02.0f}/OR_{product_name}-M6C{band:02.0f}'
+                      )
+        all_keys= [key for key in keys]
+        key = all_keys[0]
     resp = requests.get(f'https://{bucket_name}.s3.amazonaws.com/{key}')
 
     file_name = key.split('/')[-1].split('.')[0]
@@ -166,7 +175,7 @@ if __name__=='__main__':
 
     X = nc4_ds.variables['x'][:] * height
     Y = nc4_ds.variables['y'][:] * height
-    num_lons, num_lats = len(X), len(Y)
+    num_lons, num_lats  = len(X), len(Y)
 
     min_lon = nc4_ds.variables['geospatial_lat_lon_extent'].geospatial_westbound_longitude
     max_lon = nc4_ds.variables['geospatial_lat_lon_extent'].geospatial_eastbound_longitude
@@ -175,7 +184,7 @@ if __name__=='__main__':
     lat_range = max_lat - min_lat
     lon_range = max_lon - min_lon
 
-    margin = 10
+    margin = 15
     track_data = track_data[track_data['LAT'] > min_lat + margin]
     track_data = track_data[track_data['LAT'] < max_lat - margin]
     track_data = track_data[track_data['LON'] > min_lon + margin]
