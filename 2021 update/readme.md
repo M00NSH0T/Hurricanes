@@ -4,5 +4,5 @@ This is a work in progress. Currently, my notebook walks through how to tie into
 
 ![image](https://github.com/M00NSH0T/Hurricanes/blob/master/2021%20update/storm_centered/centered_2017152N14262_20171523.png)
 
-
+In the coming days, I will be adding a baseline tensorflow model that uses tf.data to create feature crosses of the track data and combine this with the image data to forecast future tracks. 
 
