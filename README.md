@@ -1,6 +1,6 @@
 # Predicting Hurricanes
 
-### Note: I have recently returned to this project to make use of NOAA's Big Data Project's offerings on both AWS and GCP, which weren't available when I started the series. Please check out the "2021 update" folder and included code / notebooks.
+### 2/28/2021 Note: I have recently returned to this project to make use of NOAA's Big Data Project's offerings on both AWS and GCP, which weren't available when I started the series. Please check out the "2021 update" folder and included code / notebooks.
 
 ### Here's the code associated with my "Predicting Hurricanes" YouTube series. https://www.youtube.com/channel/UCPmLClJE0GmnZ4e7sW_Fu7A
 
