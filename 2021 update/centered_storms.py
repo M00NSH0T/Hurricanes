@@ -1,4 +1,3 @@
-import xarray as xr
 import requests
 import netCDF4
 import boto3
@@ -7,11 +6,9 @@ from botocore.config import Config
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime,timedelta
-from tqdm import tqdm
 import gc
 import os
-from multiprocessing import Pool
-
+from math import pi
 os.environ['PROJ_LIB'] = r'c:\Users\kylea\AppData\Local\conda\conda\envs\hurricanes\Library\share'
 
 from mpl_toolkits.basemap import Basemap
@@ -134,6 +131,8 @@ if __name__=='__main__':
     track_data = pd.read_csv('clean_tracks.csv', usecols=['SID', 'ISO_TIME', 'LAT', 'LON', 'STORM_SPEED', 'STORM_DIR'],
                              infer_datetime_format=True)
 
+    track_data = pd.read_csv('clean_tracks.csv', usecols=['SID', 'ISO_TIME', 'LAT', 'LON', 'STORM_SPEED', 'STORM_DIR'],
+                             infer_datetime_format=True)
     track_data = track_data.replace(' ', np.nan)  # a few hunderd blank rows get brought in at the end.
     track_data.dropna(inplace=True)
     track_data['SID'] = track_data['SID'].astype('string')
@@ -142,10 +141,35 @@ if __name__=='__main__':
     track_data['LON'] = track_data['LON'].astype('float16')
     track_data['STORM_SPEED'] = track_data['STORM_SPEED'].astype('int8')
     track_data['STORM_DIR'] = track_data['STORM_DIR'].astype('int8')
-    track_data['STORM_DIR'] = np.sin(np.deg2rad(track_data['STORM_DIR']))
+    track_data['sin_STORM_DIR'] = np.sin(np.deg2rad(track_data['STORM_DIR']))
+    track_data['cos_STORM_DIR'] = np.cos(np.deg2rad(track_data['STORM_DIR']))
     track_data['year'] = track_data['ISO_TIME'].dt.year
+
     track_data['day_of_year'] = track_data['ISO_TIME'].dt.day_of_year
+    track_data['sin_day_of_year'] = np.sin(2 * pi * track_data['day_of_year'] / 364)
+    track_data['cos_day_of_year'] = np.cos(2 * pi * track_data['day_of_year'] / 364)
+
     track_data['hour'] = track_data['ISO_TIME'].dt.hour
+    track_data['sin_hour'] = np.sin(2 * pi * track_data['hour'] / 23)
+    track_data['cos_hour'] = np.cos(2 * pi * track_data['hour'] / 23)
+    track_data['LON'][track_data['LON'] > 180] -= 360
+    track_data['LON'][track_data['LON'] < -180] += 360
+
+    track_data.sort_values(['SID', 'ISO_TIME'], inplace=True)
+    track_data.reset_index(inplace=True, drop=True)
+    storm_list = track_data['SID'].drop_duplicates()
+    dfs = []
+    for storm in storm_list:
+        temp = track_data[track_data['SID'] == storm].copy()
+        temp['delta_lat'] = temp['LAT'].diff(1)
+        temp['delta_lon'] = temp['LON'].diff(1)
+        for offset in range(1, 5):
+            temp[f'delta_lat_m{offset * 3}'] = temp['delta_lat'].shift(-offset)
+            temp[f'delta_lon_m{offset * 3}'] = temp['delta_lon'].shift(-offset)
+        temp.drop(columns=['delta_lat', 'delta_lon'], inplace=True)
+        dfs.append(temp)
+    track_data = pd.concat(dfs)
+
     oldest_available = datetime(year=2017, month=1, day=1) + timedelta(days=60)
     track_data = track_data[track_data['ISO_TIME'] > oldest_available]
 
