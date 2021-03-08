@@ -1,6 +1,6 @@
-# Check Out the Jupyter Notebook
+# Check Out the Jupyter Notebooks in this Directory
 
-This is a work in progress. However, it's already quite long, so you may need to click the link to reload it a couple time to get it to display in GitHub. Once I finish it, I'll probably cut it into a few pieces to address this. 
+The notebooks are numbered in the order you should view them in. However, the first notebook is quite long as it contains everything from preprocessing to visualizing predicted hurricane tracks for the basline model, so you may need to click the link to reload it a couple time to get it to display in GitHub. 
 
 Currently, my notebook walks through how to tie into the AWS GEOS16 satellite data, along with historic hurricane track data, to create a set of nearly 9000 views of several hundred storms from space. I combine satellite imagery using wavelengths outside the visible spectrum to ensure we see detail at night as well as during the day, and superimpose a slightly transparent view of these storms over a terrain map of the world, so our images also show coastline and other terrain detail usually obscured by cloud cover, and all but invisible at night. Here's a sample:
 
