@@ -14,7 +14,9 @@ The second and third notebooks attempt to improve upon the model of the first by
 
 The third notebook attemps to bring in more data via the creation and use of composite full disk views of what the GOES16 satellite views across three of its bands. All three of these bands are well outside the visible spectrum, but they are used as the RGB color channels of a synthetic generated view. My thinking here was that by using channels outisde the visible light spectrum, the model would see negligible differences between daytime and nighttime, which would aid in training, and but combining these channels, it would be able to discern more detail than with one band alone. Certainly looking at these images with the human eye, it's easy to see more of the storm pattens than by looking at any single band's image alone. Here's an example of a composite image:
 
-![image](https://github.com/M00NSH0T/Hurricanes/blob/master/2021%20update/full_disks/fd20171066.png)
+![image](https://github.com/M00NSH0T/Hurricanes/blob/master/2021%20update/full_disks/fd20171069.png)
 
-In the coming days, I will be adding a baseline tensorflow model that uses tf.data and Keras to create feature crosses of the track data and combine this with the image data to forecast future tracks. 
+My next goal here is to revisit this general approach using alternative data sources, such as some of the derived variables output by GOES16/17, as well as the realtime composite data provided by forecasting models available in the cloud to generate similar views of the present storm, and then augment the training data with similar data from the Reanalysis 2 dataset.
+
+If I can bring in enough historic data, I will also explore the use of LSTM / GRU versions of the image processing branches of the model.
 
